@@ -7,7 +7,6 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -17,19 +16,18 @@ export default function SignUpPage() {
     setError("");
 
     try {
-      const { data, error } = await authClient.signUp.email({
+      const { error } = await authClient.signUp.email({
         email,
         password,
         name,
-        username,
       });
 
       if (error) {
-        setError(error.message);
+        setError(error.message || "An error occurred");
       } else {
         window.location.href = "/dashboard";
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);
@@ -43,12 +41,12 @@ export default function SignUpPage() {
       });
 
       if (error) {
-        setError(error.message);
+        setError(error.message || "An error occurred");
       } else if (data?.url) {
         // Redirect to Google OAuth
         window.location.href = data.url;
       }
-    } catch (err) {
+    } catch {
       setError("Failed to sign in with Google");
     }
   };
@@ -100,21 +98,6 @@ export default function SignUpPage() {
                 placeholder="Full name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="username" className="sr-only">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div>

@@ -18,11 +18,6 @@ export const ScoreWheel: React.FC<ScoreWheelProps> = ({
   const sliderWidth = size;
   const sliderHeight = 20;
 
-  // Convert score (0-100) to position (0 to sliderWidth)
-  const scoreToPosition = (score: number) => {
-    return (score / 100) * sliderWidth;
-  };
-
   // Convert position to score (0-100)
   const positionToScore = (position: number) => {
     const score = (position / sliderWidth) * 100;
@@ -76,8 +71,6 @@ export const ScoreWheel: React.FC<ScoreWheelProps> = ({
       document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging]);
-
-  const thumbPosition = scoreToPosition(value);
 
   return (
     <div className="flex flex-col items-center space-y-4">

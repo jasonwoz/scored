@@ -1,6 +1,5 @@
 import { betterAuth } from "better-auth";
 import { Pool } from "pg";
-import { username } from "better-auth/plugins";
 
 export const pool = new Pool({
     connectionString: "postgres://woz:password@localhost:5432/woz",

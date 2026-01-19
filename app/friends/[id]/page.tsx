@@ -151,7 +151,7 @@ export default function FriendProfilePage() {
   }
 
   const averageScore = getAverageScore();
-  const { current: currentStreak, longest: longestStreak } = getStreakInfo();
+  const { current: currentStreak } = getStreakInfo();
 
   return (
     <div className="min-h-screen bg-gray-50">

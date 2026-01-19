@@ -8,6 +8,7 @@ interface User {
   id: string;
   name: string;
   username: string;
+  email: string;
 }
 
 interface FriendRequest {
@@ -18,9 +19,17 @@ interface FriendRequest {
   created_at: string;
 }
 
+interface ScoreData {
+  id: number;
+  score: number;
+  description: string | null;
+  date: string;
+  created_at: string;
+}
+
 export default function DashboardPage() {
   const { data: session, isPending, error } = authClient.useSession();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState<'profile' | 'friends' | 'scores'>('profile');
 
   // Friend system state
@@ -33,21 +42,8 @@ export default function DashboardPage() {
   // Score system state
   const [todayScore, setTodayScore] = useState<number>(50);
   const [todayDescription, setTodayDescription] = useState("");
-  const [scoreHistory, setScoreHistory] = useState<any[]>([]);
+  const [scoreHistory, setScoreHistory] = useState<ScoreData[]>([]);
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
-
-  useEffect(() => {
-    if (!isPending) {
-      if (session?.user) {
-        loadUserProfile();
-        loadFriendsData();
-        loadScoresData();
-      } else if (error || !session) {
-        // Only redirect if we're sure there's no session
-        window.location.href = "/signin";
-      }
-    }
-  }, [session, isPending, error]);
 
   const loadUserProfile = async () => {
     try {
@@ -92,7 +88,7 @@ export default function DashboardPage() {
 
         // Check if there's already a score for today
         const today = new Date().toISOString().split('T')[0];
-        const todaysScore = data.scores?.find((score: any) =>
+        const todaysScore = data.scores?.find((score: ScoreData) =>
           score.date === today
         );
 
@@ -105,6 +101,21 @@ export default function DashboardPage() {
       console.error('Failed to load scores data:', error);
     }
   };
+
+  useEffect(() => {
+    if (!isPending) {
+      if (session?.user) {
+        // Load user profile first, then other data
+        loadUserProfile().then(() => {
+          loadFriendsData();
+          loadScoresData();
+        });
+      } else if (error || !session) {
+        // Only redirect if we're sure there's no session
+        window.location.href = "/signin";
+      }
+    }
+  }, [session, isPending, error, user?.id]);
 
   const handleSubmitScore = async () => {
     if (!user?.id) return;

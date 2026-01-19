@@ -34,17 +34,17 @@ export default function SignInPage() {
         }
       }
 
-      const { data, error } = await authClient.signIn.email({
+      const { error } = await authClient.signIn.email({
         email: emailToUse,
         password,
       });
 
       if (error) {
-        setError(error.message);
+        setError(error.message || "An error occurred");
       } else {
         window.location.href = "/dashboard";
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);
@@ -59,14 +59,14 @@ export default function SignInPage() {
       });
 
       if (error) {
-        setError(error.message);
+        setError(error.message || "An error occurred");
       } else if (data?.url) {
         // Store the current page for potential redirect after OAuth
         sessionStorage.setItem("oauth_redirect", window.location.pathname);
         // Redirect to Google OAuth
         window.location.href = data.url;
       }
-    } catch (err) {
+    } catch {
       setError("Failed to sign in with Google");
     }
   };
