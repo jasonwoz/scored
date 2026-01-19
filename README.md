@@ -7,7 +7,8 @@ A Next.js application for logging daily scores (0-100) with descriptions, featur
 - ✅ **Daily Score Logging** (0-100 with descriptions)
 - ✅ **Score History** with visual progress tracking
 - ✅ Email & password authentication
-- ✅ Username-based authentication
+- ✅ Username-based authentication (sign in with username or email)
+- ✅ Editable username in profile settings
 - ✅ Google OAuth sign-in
 - ✅ Friend request system
 - ✅ **Friends Feed** - Social score sharing
@@ -163,10 +164,14 @@ Run the `neon-setup.sql` script in your Neon PostgreSQL database to create all r
 ## Usage
 
 1. **Sign up** with email, username, password, and name
-2. **Add friends** in the Dashboard → Friends tab:
+2. **Sign in** with email or username and password
+3. **Edit profile** in Dashboard → Profile tab:
+   - Change your username
+   - View account information
+4. **Add friends** in the Dashboard → Friends tab:
    - Search for users by username or name
    - Send friend requests and accept incoming requests
-3. **Log daily scores** in the Dashboard → Daily Scores tab:
+5. **Log daily scores** in the Dashboard → Daily Scores tab:
    - Drag the white thumb along the horizontal slider
    - Watch the bar fill with color as you drag (red → yellow → green)
    - Score updates in real-time from 0 to 100

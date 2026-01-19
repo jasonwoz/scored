@@ -39,6 +39,11 @@ export default function DashboardPage() {
   const [friends, setFriends] = useState<User[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
+  // Profile editing state
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+
   // Score system state
   const [todayScore, setTodayScore] = useState<number>(50);
   const [todayDescription, setTodayDescription] = useState("");
@@ -99,6 +104,37 @@ export default function DashboardPage() {
       }
     } catch (error) {
       console.error('Failed to load scores data:', error);
+    }
+  };
+
+  const updateUsername = async () => {
+    if (!user || !newUsername.trim() || newUsername === user.username) {
+      setIsEditingUsername(false);
+      return;
+    }
+
+    setIsUpdatingProfile(true);
+    try {
+      const response = await fetch('/api/auth/update-username', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newUsername: newUsername.trim() }),
+      });
+
+      if (response.ok) {
+        // Reload user profile to get updated data
+        await loadUserProfile();
+        setIsEditingUsername(false);
+        setNewUsername("");
+      } else {
+        const error = await response.json();
+        alert(error.error || "Failed to update username");
+      }
+    } catch (error) {
+      console.error('Error updating username:', error);
+      alert("Failed to update username");
+    } finally {
+      setIsUpdatingProfile(false);
     }
   };
 
@@ -307,8 +343,51 @@ export default function DashboardPage() {
                     </div>
                     <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                       <dt className="text-sm font-medium text-gray-500">Username</dt>
-                      <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 font-mono bg-gray-100 p-2 rounded">
-                        {user.username || "Not provided"}
+                      <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
+                        {isEditingUsername ? (
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="text"
+                              value={newUsername}
+                              onChange={(e) => setNewUsername(e.target.value)}
+                              placeholder={user.username || "Enter username"}
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                              disabled={isUpdatingProfile}
+                            />
+                            <button
+                              onClick={updateUsername}
+                              disabled={isUpdatingProfile || !newUsername.trim()}
+                              className="px-3 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {isUpdatingProfile ? "Saving..." : "Save"}
+                            </button>
+                            <button
+                              onClick={() => {
+                                setIsEditingUsername(false);
+                                setNewUsername("");
+                              }}
+                              disabled={isUpdatingProfile}
+                              className="px-3 py-2 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono bg-gray-100 p-2 rounded">
+                              {user.username || "Not set"}
+                            </span>
+                            <button
+                              onClick={() => {
+                                setIsEditingUsername(true);
+                                setNewUsername(user.username || "");
+                              }}
+                              className="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        )}
                       </dd>
                     </div>
                     <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

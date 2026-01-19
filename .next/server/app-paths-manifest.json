@@ -3,8 +3,8 @@
   "/api/friends/route": "app/api/friends/route.js",
   "/api/auth/user-profile/route": "app/api/auth/user-profile/route.js",
   "/api/scores/route": "app/api/scores/route.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/signin/page": "app/signin/page.js",
+  "/api/auth/update-username/route": "app/api/auth/update-username/route.js",
   "/page": "app/page.js",
-  "/friends-feed/page": "app/friends-feed/page.js"
+  "/friends-feed/page": "app/friends-feed/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }
