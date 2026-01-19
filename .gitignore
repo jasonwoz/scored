@@ -1,4 +1,4 @@
-.env
+.env*
 node_modules
 dist
 dist-ssr
@@ -25,3 +25,4 @@ lerna-debug.log*
 *.sln
 *.sw?
 
+.vercel

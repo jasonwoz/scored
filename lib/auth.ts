@@ -11,6 +11,7 @@ export const auth = betterAuth({
     trustedOrigins: [
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "https://scored-ashy.vercel.app",
     ],
     emailAndPassword: {
         enabled: true,
@@ -36,6 +37,6 @@ export const auth = betterAuth({
     redirectTo: "/dashboard",
     // Redirect URLs for OAuth flows
     baseURL: process.env.NODE_ENV === "production"
-        ? "https://yourdomain.com"
+        ? "https://scored-ashy.vercel.app/signup"
         : "http://localhost:3000",
 })
