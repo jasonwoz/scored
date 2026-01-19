@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { Pool } from "pg";
 
 export const pool = new Pool({
-    connectionString: "postgres://woz:password@localhost:5432/woz",
+    connectionString: process.env.DATABASE_URL,
 });
 
 export const auth = betterAuth({
@@ -37,6 +37,6 @@ export const auth = betterAuth({
     redirectTo: "/dashboard",
     // Redirect URLs for OAuth flows
     baseURL: process.env.NODE_ENV === "production"
-        ? "https://scored-ashy.vercel.app/signup"
+        ? "https://scored-ashy.vercel.app"
         : "http://localhost:3000",
 })

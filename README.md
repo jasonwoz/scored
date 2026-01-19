@@ -47,6 +47,34 @@ scored/
 └── components.json       # shadcn/ui configuration
 ```
 
+## Production Deployment
+
+### Environment Variables
+Set these environment variables in your Vercel dashboard:
+
+```env
+# Database
+DATABASE_URL=your_neon_postgresql_connection_string
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Next.js
+NODE_ENV=production
+```
+
+### Google OAuth Configuration
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Navigate to "APIs & Services" > "Credentials"
+3. Edit your OAuth 2.0 Client ID
+4. Add these redirect URIs:
+   - `https://scored-ashy.vercel.app/api/auth/callback/google`
+   - `http://localhost:3000/api/auth/callback/google` (for local development)
+
+### Database Setup
+Run the `neon-setup.sql` script in your Neon PostgreSQL database to create all required tables.
+
 ## Getting Started
 
 1. **Install dependencies:**
